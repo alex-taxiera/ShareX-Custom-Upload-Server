@@ -8,7 +8,7 @@ async function paste(req, res) {
     let form = new formidable.IncomingForm()
     form.parse(req, (err, fields, files) => {
         let userIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
-        if (!this.auth(this.c.key, fields.key)) {
+        if (!this.auth(fields.key)) {
             res.statusCode = 401
             res.write("Unauthorized");
             res.end();
@@ -18,13 +18,13 @@ async function paste(req, res) {
         let newpath = `${__dirname}/../uploads/${fileName+files.fdata.name.toString().match(/(\.)+([a-zA-Z0-9]+)+/g, "").toString()}`;
         if (!this.c.paste.allowed.includes(files.fdata.name.substring(files.fdata.name.lastIndexOf(".") + 1, files.fdata.name.length))) {
             res.statusCode = 415
-            res.write(`http://${req.headers.host}/ERR_ILLEGAL_FILE_TYPE`)
+            res.write(`http://${req.headers.host}/sharex/ERR_ILLEGAL_FILE_TYPE`)
             return res.end()
         } else {
             if (Math.round((files.fdata.size / 1024) / 1000) > this.c.paste.max_upload_size) {
                 if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[FAILED PASTE][USER]\n[FILE](${files.fdata.name})\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\n[ERROR](ERR_FILE_TOO_BIG)\`\`\``)
                 res.statusCode = 413
-                res.write(`http://${req.headers.host}/ERR_FILE_TOO_BIG`)
+                res.write(`http://${req.headers.host}/sharex/ERR_FILE_TOO_BIG`)
                 return res.end()
             } else {
                 let lv = this.log.verbose
@@ -45,11 +45,11 @@ async function paste(req, res) {
                             fs.unlink(newpath, err => {
                                 if (err) return //le(err)
                             });
-                            //lv(`New Paste: http://${req.headers.host}/${fileName} | IP: ${userIP}`)
-                            let insecure = `http://${req.headers.host}/${fileName}`
-                            let secure = `https://${req.headers.host}/${fileName}`
+                            this.log.verbose(`New Paste: http://${req.headers.host}/sharex/${fileName} | IP: ${userIP}`)
+                            let insecure = `http://${req.headers.host}/sharex/${fileName}`
+                            let secure = `https://${req.headers.host}/sharex/${fileName}`
                             res.write(req.secure ? secure : insecure)
-                            //if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW PASTE]\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/${fileName}`)
+                            if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW PASTE]\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/sharex/${fileName}`)
                             return res.end()
                         })
                     })

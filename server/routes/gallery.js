@@ -8,7 +8,7 @@ async function post(req, res) {
     let userIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
     res.setHeader("Content-Type", "text/html");
     let password = this.c.admin.key
-    if (!this.auth(password, req.body.password)) {
+    if (!this.c.admin.key || !req.body.password || this.c.admin.key !== req.body.password) {
         res.statusCode = 401
         res.render("unauthorized")
         res.end();
@@ -19,7 +19,7 @@ async function post(req, res) {
     fs.readdir(`${__dirname}/../uploads`, (err, files) => {
         files.forEach((file, idx, array) => {
             if (file.toString().includes(".jpg") || file.toString().includes(".png") || file.toString().includes(".gif")) {
-                pics.push(`http://${req.headers.host}/${file.toString()}`);
+                pics.push(`http://${req.headers.host}/sharex/${file.toString()}`);
                 if (idx === array.length - 1) {
                     res.render("gallery", {
                         pictures: pics
