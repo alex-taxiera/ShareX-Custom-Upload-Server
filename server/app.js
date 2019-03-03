@@ -14,7 +14,7 @@ class ShareXAPI {
   constructor (c) {
     this.utils = utils
     this.log = utils.log
-    this.auth = utils.auth([this.c.key, this.c.admin.key])
+    this.auth = utils.auth([c.key, c.admin.key])
     this.randomToken = utils.randomToken
     this.c = c;
     this.monitorChannel = null
