@@ -19,7 +19,7 @@ async function post(req, res) {
     fs.readdir(`${__dirname}/../uploads`, (err, files) => {
         files.forEach((file, idx, array) => {
             if (file.toString().includes(".jpg") || file.toString().includes(".png") || file.toString().includes(".gif")) {
-                pics.push(`http://${req.headers.host}/sharex/${file.toString()}`);
+                pics.push(`http://${req.headers.host}/l/${file.toString()}`);
                 if (idx === array.length - 1) {
                     res.render("gallery", {
                         pictures: pics

@@ -34,7 +34,7 @@ async function files(req, res) {
             if (Math.round((files.fdata.size / 1024) / 1000) > this.c.admin.maxUploadSize) {
                 if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[FAILED UPLOAD][ADMIN]\n[FILE](${files.fdata.name})\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\n[ERROR](ERR_FILE_TOO_BIG)\`\`\``)
                 res.statusCode = 413
-                res.write(`http://${req.headers.host}/sharex/ERR_FILE_TOO_BIG`)
+                res.write(`http://${req.headers.host}/l/ERR_FILE_TOO_BIG`)
                 return res.end()
             } else {
                 fs.move(oldpath, newpath, err => {
@@ -55,11 +55,11 @@ async function files(req, res) {
                             })
                         })
                     }
-                    if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW UPLOAD][ADMIN]\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\`\`\`\nhttp://${req.headers.host}/sharex/${returnedFileName}`)
+                    if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW UPLOAD][ADMIN]\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\`\`\`\nhttp://${req.headers.host}/l/${returnedFileName}`)
                     if (err) return res.write(err)
-                    this.log.verbose(`New File Upload: http://${req.headers.host}/sharex/${returnedFileName} | IP: ${userIP}`)
-                    let insecure = `http://${req.headers.host}/sharex/${returnedFileName}`
-                    let secure = `https://${req.headers.host}/sharex/${returnedFileName}`
+                    this.log.verbose(`New File Upload: http://${req.headers.host}/l/${returnedFileName} | IP: ${userIP}`)
+                    let insecure = `http://${req.headers.host}/l/${returnedFileName}`
+                    let secure = `https://${req.headers.host}/l/${returnedFileName}`
                     res.write(req.secure ? secure : insecure)
                     return res.end()
                 })
@@ -68,13 +68,13 @@ async function files(req, res) {
             if (Math.round((files.fdata.size / 1024) / 1000) > this.c.maxUploadSize) {
                 if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[FAILED UPLOAD][USER]\n[FILE](${files.fdata.name})\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\n[ERROR](ERR_FILE_TOO_BIG)\`\`\``)
                 res.statusCode = 413
-                res.write(`http://${req.headers.host}/sharex/ERR_FILE_TOO_BIG`)
+                res.write(`http://${req.headers.host}/l/ERR_FILE_TOO_BIG`)
                 return res.end()
             } else {
                 if (!this.c.allowed.includes(fileExt)) {
                     if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[FAILED UPLOAD][USER]\n[FILE](${files.fdata.name})\n[SIZE](${Math.round(files.fdata.size / 1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\n[ERROR](ERR_ILLEGAL_FILE_TYPE)\`\`\``)
                     res.statusCode = 415
-                    res.write(`http://${req.headers.host}/sharex/ERR_ILLEGAL_FILE_TYPE`)
+                    res.write(`http://${req.headers.host}/l/ERR_ILLEGAL_FILE_TYPE`)
                     return res.end()
                 } else {
                     fs.move(oldpath, newpath, err => {
@@ -95,11 +95,11 @@ async function files(req, res) {
                                 })
                             })
                         }
-                        if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW UPLOAD][USER]\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/sharex/${returnedFileName}`)
+                        if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW UPLOAD][USER]\n[SIZE](${Math.round(files.fdata.size/1024)}KB)\n[TYPE](${files.fdata.type})\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/l/${returnedFileName}`)
                         if (err) return res.write(err)
-                        this.log.verbose(`New File Upload: http://${req.headers.host}/sharex/${returnedFileName} | IP: ${userIP}`)
-                        let insecure = `http://${req.headers.host}/sharex/${returnedFileName}`
-                        let secure = `https://${req.headers.host}/sharex/${returnedFileName}`
+                        this.log.verbose(`New File Upload: http://${req.headers.host}/l/${returnedFileName} | IP: ${userIP}`)
+                        let insecure = `http://${req.headers.host}/l/${returnedFileName}`
+                        let secure = `https://${req.headers.host}/l/${returnedFileName}`
                         res.write(req.secure ? secure : insecure)
                         return res.end()
                     })
