@@ -45,11 +45,11 @@ async function paste(req, res) {
                             fs.unlink(newpath, err => {
                                 if (err) return //le(err)
                             });
-                            this.log.verbose(`New Paste: http://${req.headers.host}/sharex/${fileName} | IP: ${userIP}`)
+                            // this.log.verbose(`New Paste: http://${req.headers.host}/sharex/${fileName} | IP: ${userIP}`)
                             let insecure = `http://${req.headers.host}/sharex/${fileName}`
                             let secure = `https://${req.headers.host}/sharex/${fileName}`
                             res.write(req.secure ? secure : insecure)
-                            if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW PASTE]\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/sharex/${fileName}`)
+                            // if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW PASTE]\n[IP](${userIP})\n\`\`\`\nhttp://${req.headers.host}/sharex/${fileName}`)
                             return res.end()
                         })
                     })
