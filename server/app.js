@@ -28,10 +28,10 @@ class ShareXAPI {
     this.app.use(bodyParser.urlencoded({
         extended: true
     }));
-    this.app.use(express.static(`${__dirname}/uploads/`, {
+    this.app.use(express.static(`${__dirname}/sharex/uploads/`, {
         extensions: this.c.admin.allowed
     }))
-    this.app.use(express.static(`${__dirname}/views/`, {
+    this.app.use(express.static(`${__dirname}/sharex/views/`, {
         extensions: ["css"],
     }))
     this.app.get("/", routes.main.bind(this))
