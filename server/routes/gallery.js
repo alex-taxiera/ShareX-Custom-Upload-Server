@@ -21,7 +21,7 @@ async function post(req, res) {
         res.render("gallery", {
             pictures: files.map((file) => {
                 if (file.toString().includes(".jpg") || file.toString().includes(".png") || file.toString().includes(".gif")) {
-                    pics.push(`http://${req.headers.host}/l/${file.toString()}`);
+                    return `http://${req.headers.host}/l/${file.toString()}`;
                 }
             })
         })
