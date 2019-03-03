@@ -19,8 +19,8 @@ async function post(req, res) {
         stream.end();
         if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW][SHORT URL]\n[URL](${req.body.URL})\n[NEW](${req.headers.host}/l/${fileName})\n[IP](${userIP})\n\`\`\``)
         this.log.verbose(`New Short URL: http://${req.headers.host}/l/${fileName} | IP: ${userIP}`)
-        let insecure = `/short?success=http://${req.headers.host}/l/${fileName}`
-        let secure = `/short?success=https://${req.headers.host}/l/${fileName}`
+        let insecure = `/l/short?success=http://${req.headers.host}/l/${fileName}`
+        let secure = `/l/short?success=https://${req.headers.host}/l/${fileName}`
         res.redirect(req.secure ? secure : insecure)
         return res.end();
     });
