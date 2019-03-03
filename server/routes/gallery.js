@@ -15,19 +15,17 @@ async function post(req, res) {
         return this.log.warning(`Unauthorized User | File Upload | ${userIP}`)
     }
     this.log.warning(`IP Address: ${userIP} successfully accessed gallery`)
-    let pics = [];
     fs.readdir(`${__dirname}/../uploads`, (err, files) => {
-        files.forEach((file, idx, array) => {
-            if (file.toString().includes(".jpg") || file.toString().includes(".png") || file.toString().includes(".gif")) {
-                pics.push(`http://${req.headers.host}/l/${file.toString()}`);
-                if (idx === array.length - 1) {
-                    res.render("gallery", {
-                        pictures: pics
-                    })
-                    return res.end();
+        console.log('err', err)
+        console.log('files', files)
+        res.render("gallery", {
+            pictures: files.map((file) => {
+                if (file.toString().includes(".jpg") || file.toString().includes(".png") || file.toString().includes(".gif")) {
+                    pics.push(`http://${req.headers.host}/l/${file.toString()}`);
                 }
-            }
-        });
+            })
+        })
+        res.end();
     });
 }
 module.exports = { get, post }
