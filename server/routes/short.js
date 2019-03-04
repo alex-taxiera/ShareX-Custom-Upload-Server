@@ -10,17 +10,17 @@ async function post(req, res) {
     res.setHeader("Content-Type", "text/text");
     let fileName = this.randomToken(4)
     if (req.body.URL == undefined || req.body.URL == "" || req.body.URL == null) {
-        res.redirect("/l/short?error=No URL Input");
+        res.redirect("/short?error=No URL Input");
         return res.end();
     }
     let stream = fs.createWriteStream(`${__dirname}/../uploads/${fileName}.html`)
     stream.once("open", fd => {
         stream.write(`<meta http-equiv="refresh" content="0;URL='${req.body.URL}'" />`);
         stream.end();
-        if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW][SHORT URL]\n[URL](${req.body.URL})\n[NEW](${req.headers.host}/l/${fileName})\n[IP](${userIP})\n\`\`\``)
-        this.log.verbose(`New Short URL: http://${req.headers.host}/l/${fileName} | IP: ${userIP}`)
-        let insecure = `/l/short?success=http://${req.headers.host}/l/${fileName}`
-        let secure = `/l/short?success=https://${req.headers.host}/l/${fileName}`
+        if (this.monitorChannel !== null) this.bot.createMessage(this.monitorChannel, `\`\`\`MARKDOWN\n[NEW][SHORT URL]\n[URL](${req.body.URL})\n[NEW](${req.headers.host}/${fileName})\n[IP](${userIP})\n\`\`\``)
+        this.log.verbose(`New Short URL: http://${req.headers.host}/${fileName} | IP: ${userIP}`)
+        let insecure = `/short?success=http://${req.headers.host}/${fileName}`
+        let secure = `/short?success=https://${req.headers.host}/${fileName}`
         res.redirect(req.secure ? secure : insecure)
         return res.end();
     });
